@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "599772408925",
+    "firebase_url": "https://go-corona-96ecd.firebaseio.com",
+    "project_id": "go-corona-96ecd",
+    "storage_bucket": "go-corona-96ecd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:599772408925:android:f734c624f4710dc77a31b4",
+        "android_client_info": {
+          "package_name": "com.example.gocorona"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "599772408925-tkm1aif0kekte9hktg2vhrjl3q54b2if.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gocorona",
+            "certificate_hash": "50c86f3a4dadf93b5f34c54d558645a8bad69ff2"
+          }
+        },
+        {
+          "client_id": "599772408925-iaacn8nc46pgmketn5uaoh1nddc2ee7d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrUxhWxKD9ejQI9Pa41d15Qf9kpZDKTiU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "599772408925-iaacn8nc46pgmketn5uaoh1nddc2ee7d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
