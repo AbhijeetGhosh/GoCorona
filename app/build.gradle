@@ -6,7 +6,7 @@ android {
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.example.gocorona"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -28,10 +28,22 @@ repositories {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'com.google.android.material:material:1.1.0-beta01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.firebase:firebase-database:19.2.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0' //for the graph
+    implementation 'com.github.f0ris.sweetalert:library:1.5.1' //for the new popup
+    implementation 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    //for the circular floating action button
+    implementation 'com.github.andremion:floatingnavigationview:1.2.0'
+    //for floating navigation drawer
+    implementation 'com.github.Hitomis:CircleMenu:v1.1.0'
+    //for complete circular floating menu (prayer)
+    implementation 'com.ramotion.directselect:direct-select:0.1.1' // for the spinner for countries
+    implementation 'com.facebook.shimmer:shimmer:0.5.0' //shimmer text view for disclaimer
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    //implementation 'com.android.support:design:28.0.0'
+
 }
