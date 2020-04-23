@@ -37,6 +37,9 @@ public class PrayerActivity extends AppCompatActivity {
     String[] buddhism = {"do you even Lyft bro",
                           "Brah chill the hell out will ya? ",
                             "sounds like a plan"};
+    String[] eminem = {"1","2","3"};
+    String[] greek = {"1","2","3"};
+    String[] random = {"1","2","3"};
 
 
 
@@ -99,6 +102,57 @@ public class PrayerActivity extends AppCompatActivity {
                     pop.show();
                     c1++;//upgrading counter
                 }
+                else if(i==2){
+                    //add points
+                    addPoints();
+                    //popup
+                    pop = new SweetAlertDialog(PrayerActivity.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
+                    pop.setTitleText("Eminem!");
+                    pop.setContentText(eminem[c1]);
+                    pop.setCustomImage(R.drawable.eminem1);
+                    pop.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            finish();
+                        }
+                    });
+                    pop.show();
+                    c1++;//upgrading counter
+                }
+                else if(i==3){
+                    //add points
+                    addPoints();
+                    //popup
+                    pop = new SweetAlertDialog(PrayerActivity.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
+                    pop.setTitleText("Greek Gods eh!");
+                    pop.setContentText(greek[c1]);
+                    pop.setCustomImage(R.drawable.greek1);
+                    pop.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            finish();
+                        }
+                    });
+                    pop.show();
+                    c1++;//upgrading counter
+                }
+                else if(i==4){
+                    //add points
+                    addPoints();
+                    //popup
+                    pop = new SweetAlertDialog(PrayerActivity.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
+                    pop.setTitleText("Choosing at random (secular much)!");
+                    pop.setContentText(random[c1]);
+                    pop.setCustomImage(R.drawable.level_reaction);
+                    pop.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            finish();
+                        }
+                    });
+                    pop.show();
+                    c1++;//upgrading counter
+                }
             }
         });
 
@@ -110,27 +164,19 @@ public class PrayerActivity extends AppCompatActivity {
 
         //initializing the reference
         reff = FirebaseDatabase.getInstance().getReference().child("CountryName").child(country);
-//        reff.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                String count = dataSnapshot.getValue().toString();
-//                Toast.makeText(PrayerActivity.this, count, Toast.LENGTH_LONG).show();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-
         //making transaction and adding one point
         reff.runTransaction(new Transaction.Handler() {
             @NonNull
             @Override
             public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
 
-                    mutableData.setValue(Integer.parseInt(mutableData.getValue().toString()) + 1000); //adding 1000 points to existing points``
-                    Toast.makeText(PrayerActivity.this, "called", Toast.LENGTH_LONG).show();
+                //Currently no value in eventAmount
+                if(mutableData.getValue() == null){
+                    mutableData.setValue(1); //making it to 1
+                }
+                else{
+                    mutableData.setValue(Integer.parseInt(mutableData.getValue().toString()) + 100); //adding one point to existing points``
+                }
                 return Transaction.success(mutableData);
 
             }

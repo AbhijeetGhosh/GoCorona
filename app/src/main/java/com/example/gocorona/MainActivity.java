@@ -30,19 +30,22 @@ import com.oguzdev.circularfloatingactionmenu.library.FloatingActionMenu;
 import com.oguzdev.circularfloatingactionmenu.library.SubActionButton;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import pl.droidsonroids.gif.GifImageButton;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button Hit, sanitizer1, scoreBoard, settings;
+    Button Hit;
     DatabaseReference reff;
     CountryName countryName;
     EditText CurrentCount, personalScore, currentLevel;
     SweetAlertDialog pop;
     Spinner mySpinner;
     FloatingActionButton cussBtn, noiseBtn;
-    com.google.android.material.floatingactionbutton.FloatingActionButton prayerFab, precaustionFab;
+    com.google.android.material.floatingactionbutton.FloatingActionButton prayerFab, sanitizerFab, Home;
+    GifImageButton virus;
     int personalScoreValue = 0;
     int level = 1;
+    String country = "India";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,29 +57,40 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this,"firebase successful",Toast.LENGTH_LONG).show();
 
         //the initializations
-        Hit = (Button)findViewById(R.id.btn);
-        sanitizer1 = (Button)findViewById(R.id.sanitizer1);
         CurrentCount = (EditText)findViewById(R.id.CurrCounter);
         personalScore = (EditText)findViewById(R.id.persona_score);
         currentLevel = (EditText)findViewById(R.id.current_level);
-        scoreBoard = (Button)findViewById(R.id.scoreBoard);
         prayerFab = (com.google.android.material.floatingactionbutton.FloatingActionButton)findViewById(R.id.prayerFAB);
-        precaustionFab = (com.google.android.material.floatingactionbutton.FloatingActionButton)findViewById(R.id.precautions);
-        settings = (Button)findViewById(R.id.home);
+        sanitizerFab = (com.google.android.material.floatingactionbutton.FloatingActionButton)findViewById(R.id.sanitizerFab);
+        Home = (com.google.android.material.floatingactionbutton.FloatingActionButton)findViewById(R.id.homeFab);
+        virus = (GifImageButton)findViewById(R.id.gifBtn);
         countryName = new CountryName();
         //int personal_score = 0;
-
 
         //opening home as soon as the app begins
         openHome();
 
-        //settings/Home
-        settings.setOnClickListener(new View.OnClickListener() {
+
+        //---------------------------------------------------------------------------------------------------------------
+
+
+        Home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openHome();
+             openHome();
             }
         });
+
+
+        virus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Toast.makeText(MainActivity.this, "1 Point!", Toast.LENGTH_LONG).show();
+                addpoints(1);
+            }
+        });
+
 
         //prayer FAB
         prayerFab.setOnClickListener(new View.OnClickListener() {
@@ -85,119 +99,24 @@ public class MainActivity extends AppCompatActivity {
                 openPrayerActivity();
             }
         });
+        prayerFab.setVisibility(View.INVISIBLE);
 
         //spinner
-        mySpinner = (Spinner)findViewById(R.id.spinner); //initializing
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this, //creating adapter
-                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Countries));
-        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mySpinner.setAdapter(myAdapter);
+//        mySpinner = (Spinner)findViewById(R.id.spinner); //initializing
+//        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(MainActivity.this, //creating adapter
+//                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.Countries));
+//        myAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        mySpinner.setAdapter(myAdapter);
 
-        //reff = FirebaseDatabase.getInstance().getReference().child("CountryName");
-
-
-        //Hit button
-        Hit.setOnClickListener(new View.OnClickListener() {
+        //sanitizerFab
+        sanitizerFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                personalScoreValue = personalScoreValue + 1; //updating personal score
-                updatePersonalScore(personalScoreValue); //displaying personal score
-                updateCurrentCountryCount(); //displaying current country's score
-                Toast.makeText(MainActivity.this, "1 Point!", Toast.LENGTH_LONG).show();
-
-                final String country = String.valueOf(mySpinner.getSelectedItem()); //getting the country name from spinner
-                countryName.setCountry(country); //adding it to the object of CountryName class's counstructor
-
-                //* getting current value of count *
-
-                //initializing the reference
-                reff = FirebaseDatabase.getInstance().getReference().child("CountryName").child(country);
-
-                //making transaction and adding one point
-                reff.runTransaction(new Transaction.Handler() {
-                    @NonNull
-                    @Override
-                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-
-                        //Currently no value in eventAmount
-                        if(mutableData.getValue() == null){
-                            mutableData.setValue(1); //making it to 1
-                        }
-                        else{
-                            mutableData.setValue(Integer.parseInt(mutableData.getValue().toString()) + 1); //adding one point to existing points``
-                        }
-                        return Transaction.success(mutableData);
-
-                    }
-
-                    @Override
-                    public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-
-                    }
-                });
-
-
-            }
-        });
-
-        sanitizer1.setVisibility(View.INVISIBLE);
-        sanitizer1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-                personalScoreValue = personalScoreValue + 10; //updating personal score
-                updatePersonalScore(personalScoreValue); //displaying personal score
-                updateCurrentCountryCount(); //displaying current country's score
-
+                addpoints(10);
                 Toast.makeText(MainActivity.this, "10 Points!!", Toast.LENGTH_LONG).show();
-
-                final String country = String.valueOf(mySpinner.getSelectedItem()); //getting the country name from spinner
-                countryName.setCountry(country); //adding it to the object of CountryName class's counstructor
-
-                //* getting current value of count *
-
-                //initializing the reference
-                reff = FirebaseDatabase.getInstance().getReference().child("CountryName").child(country);
-
-                //making transaction and adding one point
-                reff.runTransaction(new Transaction.Handler() {
-                    @NonNull
-                    @Override
-                    public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
-
-                        //Currently no value in eventAmount
-                        if(mutableData.getValue() == null){
-                            mutableData.setValue(1); //making it to 1
-                        }
-                        else{
-                            mutableData.setValue(Integer.parseInt(mutableData.getValue().toString()) + 10); //adding one point to existing points``
-                        }
-                        return Transaction.success(mutableData);
-
-                    }
-
-                    @Override
-                    public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
-
-                    }
-                });
-
             }
         });
-
-
-        //button to lauch scoreboared
-        scoreBoard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openScoreBoared();
-            }
-        });
-
-
-
+        sanitizerFab.setVisibility(View.INVISIBLE);
 
 
         //floating action button for Cuss words
@@ -209,67 +128,99 @@ public class MainActivity extends AppCompatActivity {
         SubActionButton.Builder builder=new SubActionButton.Builder(this);
         //
         ImageView deleteIcon=new ImageView(this);
-        deleteIcon.setImageResource(R.drawable.ic_menu_vector);
-        SubActionButton deleteBtn=builder.setContentView(deleteIcon).build();
+        deleteIcon.setImageResource(R.drawable.comebackicon);
+        SubActionButton comeback=builder.setContentView(deleteIcon).build();
 
         ImageView removeIcon=new ImageView(this);
-        removeIcon.setImageResource(R.drawable.level_reaction);
-        SubActionButton removeBtn=builder.setContentView(removeIcon).build();
+        removeIcon.setImageResource(R.drawable.kissmyassicon);
+        SubActionButton kissmyass=builder.setContentView(removeIcon).build();
 
         ImageView addIcon=new ImageView(this);
-        addIcon.setImageResource(R.drawable.sanitizer);
-        SubActionButton addBtn=builder.setContentView(addIcon).build();
+        addIcon.setImageResource(R.drawable.middlefinger);
+        SubActionButton middlefinger=builder.setContentView(addIcon).build();
         //creating menu
         final FloatingActionMenu fam=new FloatingActionMenu.Builder(this)
-                .addSubActionView(addBtn)
-                .addSubActionView(removeBtn)
-                .addSubActionView(deleteBtn)
+                .addSubActionView(middlefinger)
+                .addSubActionView(kissmyass)
+                .addSubActionView(comeback)
                 .attachTo(cussBtn)
                 .build();
+
         //setting onClickListener of subaction buttons
-        addBtn.setOnClickListener(new View.OnClickListener(){
+        comeback.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Toast.makeText(MainActivity.this, "works", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Comback button", Toast.LENGTH_LONG).show();
+                addpoints(10);
+                //popup
+                pop = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
+                pop.setTitleText("No you");
+                pop.setContentText("message");
+                pop.setCustomImage(R.drawable.comebackicon);
+                pop.show();
             }
         });
-        //cussBtn.setVisibility(View.INVISIBLE); //making the button invisible
-
-
-
-
-        //floating action button for noises
-        ImageView icon2 = new ImageView(MainActivity.this);
-        icon2.setImageResource(R.drawable.add);
-        //
-        noiseBtn = new FloatingActionButton.Builder(this).setContentView(icon2).setPosition(2).build();
-        //creating sub action buttons
-        SubActionButton.Builder builder1=new SubActionButton.Builder(this);
-        //
-        ImageView deleteIcon1=new ImageView(this);
-        deleteIcon1.setImageResource(R.drawable.ic_menu_vector);
-        SubActionButton deleteBtn1=builder1.setContentView(deleteIcon1).build();
-
-        ImageView removeIcon1=new ImageView(this);
-        removeIcon1.setImageResource(R.drawable.level_reaction);
-        SubActionButton removeBtn1=builder1.setContentView(removeIcon1).build();
-
-        ImageView addIcon1=new ImageView(this);
-        addIcon1.setImageResource(R.drawable.sanitizer);
-        SubActionButton addBtn1=builder1.setContentView(addIcon1).build();
-        //creating menu
-        final FloatingActionMenu fam1=new FloatingActionMenu.Builder(this)
-                .addSubActionView(addBtn1)
-                .addSubActionView(removeBtn1)
-                .addSubActionView(deleteBtn1)
-                .attachTo(noiseBtn)
-                .build();
-        //setting onClickListener of subaction buttons
-        addBtn1.setOnClickListener(new View.OnClickListener(){
+        kissmyass.setOnClickListener(new View.OnClickListener(){
             public void onClick(View view){
-                Toast.makeText(MainActivity.this, "works", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "kissmyass button", Toast.LENGTH_LONG).show();
+                addpoints(10);
+                //popup
+                pop = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
+                pop.setTitleText("kissmyass");
+                pop.setContentText("message");
+                pop.setCustomImage(R.drawable.kissmyassicon);
+                pop.show();
             }
         });
-//        //cussBtn.setVisibility(View.INVISIBLE); //making the button invisible
+        middlefinger.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                Toast.makeText(MainActivity.this, "offend button", Toast.LENGTH_LONG).show();
+                addpoints(10);
+                //popup
+                pop = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
+                pop.setTitleText("yo mama");
+                pop.setContentText("message");
+                pop.setCustomImage(R.drawable.comebackicon);
+                pop.show();
+            }
+        });
+        cussBtn.setVisibility(View.INVISIBLE); //making the button invisible
+
+
+
+
+//        //floating action button for noises
+//        ImageView icon2 = new ImageView(MainActivity.this);
+//        icon2.setImageResource(R.drawable.add);
+//        //
+//        noiseBtn = new FloatingActionButton.Builder(this).setContentView(icon2).setPosition(2).build();
+//        //creating sub action buttons
+//        SubActionButton.Builder builder1=new SubActionButton.Builder(this);
+//        //
+//        ImageView deleteIcon1=new ImageView(this);
+//        deleteIcon1.setImageResource(R.drawable.ic_menu_vector);
+//        SubActionButton deleteBtn1=builder1.setContentView(deleteIcon1).build();
+//
+//        ImageView removeIcon1=new ImageView(this);
+//        removeIcon1.setImageResource(R.drawable.level_reaction);
+//        SubActionButton removeBtn1=builder1.setContentView(removeIcon1).build();
+//
+//        ImageView addIcon1=new ImageView(this);
+//        addIcon1.setImageResource(R.drawable.sanitizer);
+//        SubActionButton addBtn1=builder1.setContentView(addIcon1).build();
+//        //creating menu
+//        final FloatingActionMenu fam1=new FloatingActionMenu.Builder(this)
+//                .addSubActionView(addBtn1)
+//                .addSubActionView(removeBtn1)
+//                .addSubActionView(deleteBtn1)
+//                .attachTo(noiseBtn)
+//                .build();
+//        //setting onClickListener of subaction buttons
+//        addBtn1.setOnClickListener(new View.OnClickListener(){
+//            public void onClick(View view){
+//                Toast.makeText(MainActivity.this, "works", Toast.LENGTH_LONG).show();
+//            }
+//        });
+////        //cussBtn.setVisibility(View.INVISIBLE); //making the button invisible
 
 
 
@@ -278,12 +229,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //openning scoreboared
-    public void openScoreBoared() {
-        Intent intent = new Intent(this, Score_Board.class);
-        startActivity(intent);
-    }
-
+    //opening prayeractivity
     public void openPrayerActivity() {
         Intent intent1 = new Intent(MainActivity.this, PrayerActivity.class);
         intent1.putExtra("current_country", String.valueOf(mySpinner.getSelectedItem()));//adding additional data using putExtras()
@@ -293,8 +239,25 @@ public class MainActivity extends AppCompatActivity {
     //openning home
     public void openHome(){
         Intent intent2 = new Intent(MainActivity.this, Home.class);
-        startActivity(intent2);
+        startActivityForResult(intent2,1);
     }
+
+
+    //getting country name from Home activity
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK) {
+                String strEditText = data.getStringExtra("editTextValue");
+                country = strEditText;
+                Toast.makeText(MainActivity.this, country, Toast.LENGTH_LONG).show();
+                DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("CountryName");
+                //mDatabase.push().setValue(country);
+                mDatabase.child(country).setValue(0);
+            }
+        }
+    }
+
     //setting personal score
     public void updatePersonalScore(int score){
         String personalScoreString = Integer.toString(score);
@@ -311,37 +274,45 @@ public class MainActivity extends AppCompatActivity {
         currentLevel.setText("LEVEL : " + levelStr);
 
 
-        if(score>5&&level==1){
+        if(score>30&&level==1){
             level = level+1; //upgrade level
-            sanitizer1.setVisibility(View.VISIBLE); //Making sanitize visible
+            sanitizerFab.setVisibility(View.VISIBLE); //Making sanitize visible
             //popup
             pop = new SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
                    pop.setTitleText("Sweet!");
-                   pop.setContentText("You just upgraded a level");
+                   pop.setContentText("You just upgraded a level and the ability to use sanitizer");
                    pop.setCustomImage(R.drawable.level_reaction);
                    pop.show();
         }
-        else if(score>10&&level==2){
+        else if(score>100&&level==2){
             level = level+1; //upgrade level
             //set visibility of something else
-            //cussBtn.setVisibility(View.VISIBLE);
+            cussBtn.setVisibility(View.VISIBLE);
 
             //popup
             pop = new SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
             pop.setTitleText("Sweet!");
-            pop.setContentText("You just upgraded a level");
+            pop.setContentText("You just upgraded a level and the ability to curse");
             pop.setCustomImage(R.drawable.level_reaction);
             pop.show();
         }
-        else if(score>15&&level==3){
+        else if(score>150&&level==3){
             level = level+1; //upgrade level
+            prayerFab.setVisibility(View.VISIBLE);
+            //popup
+            pop = new SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
+            pop.setTitleText("Sweet!");
+            pop.setContentText("You just upgraded a level and the ability to curse");
+            pop.setCustomImage(R.drawable.level_reaction);
+            pop.show();
+
 
         }
     }
 
     public void updateCurrentCountryCount(){
         //loading current count in edit box
-        final String country = String.valueOf(mySpinner.getSelectedItem()); //getting the country name from spinner
+        //final String country = String.valueOf(mySpinner.getSelectedItem()); //getting the country name from spinner
         reff = FirebaseDatabase.getInstance().getReference().child("CountryName").child(country); //creating reffernec to selected country
         reff.addValueEventListener(new ValueEventListener() {
             @Override
@@ -352,6 +323,40 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void addpoints(final int a){
+        personalScoreValue = personalScoreValue + a; //updating personal score
+        updatePersonalScore(personalScoreValue); //displaying personal score
+        updateCurrentCountryCount(); //displaying current country's score
+
+        //final String country = String.valueOf(mySpinner.getSelectedItem()); //getting the country name from spinner
+        countryName.setCountry(country); //adding it to the object of CountryName class's counstructor
+
+        //initializing the reference
+        reff = FirebaseDatabase.getInstance().getReference().child("CountryName").child(country);
+        //making transaction and adding one point
+        reff.runTransaction(new Transaction.Handler() {
+            @NonNull
+            @Override
+            public Transaction.Result doTransaction(@NonNull MutableData mutableData) {
+
+                //Currently no value in eventAmount
+                if(mutableData.getValue() == null){
+                    mutableData.setValue(1); //making it to 1
+                }
+                else{
+                    mutableData.setValue(Integer.parseInt(mutableData.getValue().toString()) + a); //adding one point to existing points``
+                }
+                return Transaction.success(mutableData);
+
+            }
+
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, boolean b, @Nullable DataSnapshot dataSnapshot) {
 
             }
         });

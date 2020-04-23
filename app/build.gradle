@@ -41,6 +41,9 @@ dependencies {
     //for complete circular floating menu (prayer)
     implementation 'com.ramotion.directselect:direct-select:0.1.1' // for the spinner for countries
     implementation 'com.facebook.shimmer:shimmer:0.5.0' //shimmer text view for disclaimer
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19' // for animation and gif
+    implementation 'com.github.yesterselga:country-picker-android:1.0' //for country picker
+    implementation 'com.github.mukeshsolanki:country-picker-android:1.1.7' // another picker that might work
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
